@@ -41,8 +41,18 @@ contract HRDiagnose is Ownable {
         emit DiagnoseRecorded();
     }
 
-    function getPatientDiagnoses() public view onlyOwner returns (string[] memory) {
+    function getMyDiagnoses() public view onlyOwner returns (string[] memory) {
         string[] memory pd = patiendDiagnoses[msg.sender];
+        string[] memory result = new string[](pd.length);
+        
+        for (uint i = 0; i < pd.length; i++) {
+            result[i] = pd[i];
+        }
+        
+        return result;
+    }
+    function getPatientDiagnoses(address _patientAddress) public view onlyOwner returns (string[] memory) {
+        string[] memory pd = patiendDiagnoses[_patientAddress];
         string[] memory result = new string[](pd.length);
         
         for (uint i = 0; i < pd.length; i++) {

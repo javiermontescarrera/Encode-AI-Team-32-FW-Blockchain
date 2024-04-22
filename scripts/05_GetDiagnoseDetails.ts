@@ -1,11 +1,10 @@
 import { ethers } from "hardhat";
-// import * as dotenv from "dotenv";
 import {
   HRDiagnose__factory,
   HRDiagnose,
 } from "../typechain-types";
 import { getProvider, getWallet } from "./Helpers";
-// dotenv.config();
+import { string } from "hardhat/internal/core/params/argumentTypes";
 
 let contract: HRDiagnose;
 
@@ -14,21 +13,14 @@ async function main() {
 
   //receiving parameters
   const parameters = process.argv.slice(2);
-  if (!parameters || parameters.length < 1)
-    throw new Error("ipfs hash and AI diagnose must be provided");
+  if (!parameters || parameters.length < 2)
+    throw new Error("Diagnose contract address and diagnose hash must be provided");
   const HRDiagnoseContractAddress = parameters[0];
-  // const ipfsHash = parameters[1];
-  // const aiDiagnose = parameters[2];
+  const diagnoseHash = parameters[1];
 
   console.log(
     `HRDiagnose contract address: ${HRDiagnoseContractAddress}. `
   );
-  // console.log(
-  //   `IPFS hash: ${ipfsHash}. `
-  // );
-  // console.log(
-  //   `AI diagnose: ${aiDiagnose}. `
-  // );
   
   //inspecting data from public blockchains using RPC connections (configuring the provider)
   const provider = getProvider();
@@ -56,10 +48,12 @@ async function main() {
     HRDiagnoseContractAddress
   ) as HRDiagnose;
 
-  const tx = await contract.getPatientDiagnoses();
-  // const receipt = await tx.wait();
+  const tx = await contract.diagnoses(diagnoseHash);
+  const diagnose: string = tx[0];
+  const diagnoseTimestamp: bigint = tx[1];
 
-  console.log(`Diagnose hashes ${tx}\n`);
+  // const { diagnose, timestamp  } = tx;
+  console.log(`Diagnose details for hash ${diagnoseHash} are: diagnose=${diagnose}, timestamp=${diagnoseTimestamp}\n`);
   console.log('END');
 }
 

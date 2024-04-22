@@ -21,31 +21,29 @@ In the second terminal:
 ```shell
 # CreateYourDevDotEnvFile
 cp .env.example.development .env
+
 # Compile
 npx hardhat compile
-# StartThenContractSaveAddress
-npx ts-node ./scripts/01_MaintenanceToken_Deploy.ts && TOKEN_CT_ADDR=0x5FbDB2315678afecb367f032d93F642f64180aa3
-npx ts-node ./scripts/02_MaintenanceTracker_Deploy.ts $TOKEN_CT_ADDR && MAIN_CT_ADDR=0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
-npx ts-node ./scripts/03_OpenMaintenanceTask.ts $MAIN_CT_ADDR John Jet EngineMaintenance && ID=0
-npx ts-node ./scripts/04_CompleteTask.ts $MAIN_CT_ADDR $ID
-npx ts-node ./scripts/05_CertifyTask.ts $MAIN_CT_ADDR $ID
-npx ts-node ./scripts/06_BuyTokens.ts $MAIN_CT_ADDR 1
-npx ts-node ./scripts/07_TokenApproval.ts $TOKEN_CT_ADDR $MAIN_CT_ADDR 1
-npx ts-node ./scripts/08_PayForTask.ts $MAIN_CT_ADDR $ID
-npx ts-node ./scripts/09_WithdrawTreasury.ts $MAIN_CT_ADDR
+# DeployTheContract
+npx ts-node ./scripts/01_HRDiagnose_Deploy.ts 
 ```
 
-```shell
-# ViewAllTheTasks
-npx ts-node ./scripts/90_QueryMaintenanceTasks.ts $MAIN_CT_ADDR
-# ViewOneSingleNFT
-npx ts-node ./scripts/91_QueryNftMetadata.ts $MAIN_CT_ADDR $ID
-```
+In this case, the deployed contract address was: 0x0f70D3Fa22B98C1f47B9b10a74c32932C4f59c9E
 
+Tests:
 ```shell
-# VerifyContractWith
-npx hardhat verify --network sepolia $TOKEN_CT_ADDR
-npx hardhat verify --network sepolia $MAIN_CT_ADDR $TOKEN_CT_ADDR "1000000000000000000"
+# RecordADiagnose
+npx ts-node ./scripts/02_RecordDiagnose.ts 0x0f70D3Fa22B98C1f47B9b10a74c32932C4f59c9E QmbNvGV8vGQ2tPK995A5VZUECkJK77x3wryd8nEUmmtBjf "t-rex fractured arm"
+
+# ListMyDiagnoses
+npx ts-node ./scripts/03_GetMyDiagnoses.ts 0x0f70D3Fa22B98C1f47B9b10a74c32932C4f59c9E
+
+# ListDiagnosesByPatient
+npx ts-node ./scripts/04_GetPatientDiagnoses.ts 0x0f70D3Fa22B98C1f47B9b10a74c32932C4f59c9E 0x8757c7D953ea058baCDF82717Caf403Bd01F1099
+
+# GetDiagnoseDetails
+npx ts-node ./scripts/05_GetDiagnoseDetails.ts 0x0f70D3Fa22B98C1f47B9b10a74c32932C4f59c9E QmbNvGV8vGQ2tPK995A5VZUECkJK77x3wryd8nEUmmtBjf
+
 ```
 
 ---
