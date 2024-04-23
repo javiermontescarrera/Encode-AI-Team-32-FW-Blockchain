@@ -8,15 +8,7 @@ Prerequisites:
 npm install
 ```
 
-Try running some of the following:
-
-In the first bash terminal:
-
-```shell
-npx hardhat node
-```
-
-In the second terminal:
+Try running the following:
 
 ```shell
 # CreateYourDevDotEnvFile
